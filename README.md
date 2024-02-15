@@ -10,3 +10,13 @@ Kokkonen Noel (noel.kokkonen@metropolia.fi) \
 ### Ajanseuranta ja kommunikaatio
 [Ajanseuranta](https://docs.google.com/spreadsheets/d/1zNquF4rOppIsuHlkpdzrMcSmvQwr92FnjMw9hFcxoVU/edit?usp=sharing) \
 [Discord huone](https://discord.com/channels/1207577718405857341/1207577718875623468)
+
+### Draw.io tallenne suunnitelmasta
+[Tallenne](https://drive.google.com/file/d/1tCwMWWl60WpciHbuS6r8Tt5wGIWZu9MJ/view?usp=sharing) 
+
+- Nähdäksesi sekä muokataksesi tiedostoa, sinun pitää kirjautua `metropolia sähköpostilla` driveen.
+- Kirjautumisen jälkeen, suunnitelma näkyy `.drawio` tiedostona, mutta sitä pääsee muokkaamaan valitsemalla `Avaa sovelluksessa draw.io`.
+
+
+
+
