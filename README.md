@@ -8,5 +8,5 @@ Lappalainen Tuuli (tuuli.lappalainen@metropolia.fi) \
 Kokkonen Noel (noel.kokkonen@metropolia.fi) \
 
 ### Ajanseuranta ja kommunikaatio
-GOOGLE DOCS \
-DISCORD
+[Ajanseuranta](https://docs.google.com/spreadsheets/d/1zNquF4rOppIsuHlkpdzrMcSmvQwr92FnjMw9hFcxoVU/edit?usp=sharing)
+[Discord huone](https://discord.com/channels/1207577718405857341/1207577718875623468)
