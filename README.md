@@ -1,3 +1,5 @@
+![current project diagram](https://github.com/tbkfi-project/Metropolia-2024Q1-Ohjelmisto1_Projekti/blob/main/diagram.png?raw=true)
+
 ### Kuvaus
 Metropolia: Tieto- ja viestintätekniikan tutkinto-ohjelma, Ohjelmisto 1 -kurssin projekti.
 
