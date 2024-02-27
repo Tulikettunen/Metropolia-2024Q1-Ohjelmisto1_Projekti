@@ -1,3 +1,5 @@
+![current project diagram](https://github.com/tbkfi-project/Metropolia-2024Q1-Ohjelmisto1_Projekti/blob/main/diagram.png?raw=true)
+
 ### Kuvaus
 Metropolia: Tieto- ja viestintätekniikan tutkinto-ohjelma, Ohjelmisto 1 -kurssin projekti.
 
@@ -17,6 +19,17 @@ Kokkonen Noel (noel.kokkonen@metropolia.fi) \
 - Nähdäksesi sekä muokataksesi tiedostoa, sinun pitää kirjautua `metropolia sähköpostilla` driveen.
 - Kirjautumisen jälkeen, suunnitelma näkyy `.drawio` tiedostona, mutta sitä pääsee muokkaamaan valitsemalla `Avaa sovelluksessa draw.io`.
 
+### Jatkokehitys ja käyttö
 
+- Kopio/lataa ohjelman koodi githubista.
+- Latuaksen jälkeen avaa ohjelman koodi pycharmilla tai muulla omavalintaisella tekstieditorilla.
+- Avaa terminal sovelluksen 'root'-folderissa ja aja uusi komento `pip install -r requirements.txt`. Komento asentaa kaikki sovelluksen tarvitsemat ulkopuoliset paketit oikeissa versioissa.
+  
+- Latautumisen jälkeen mene 'config'-kansioon ja `kopioi '.env.template'-tiedoston sisältö`.
+- 'config'-kansiossa luo uusi tiedosto `.env` ja `liitä siihen kopioimasi siältö '.env.template'-tiedostosta`.
+- Muokkaa liittämääsi sisältöä poistamlla yksittäiset risuaidat '.env'-variablejen edestä ja aseta niiden arvoiksi pyydetyt tiedot.
+
+- Tehtyäsi nämä tarvittavat toimenpiteet, pystyt jatkokehittämään ja käyttämään ohjelmaa.
+- Ohjelman käyttö onnistuu, joko pycharmissa käynnistämällä ohjelma main-tiedostosta tai terminaalin avulla ohjelman 'root'-folderissa ajamalla `py main.py`-komento.
 
 
