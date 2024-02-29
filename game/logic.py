@@ -8,16 +8,15 @@ from . import screen
 
 # Gameplay loop
 def game_loop():
+    #parcel_selection
     screen.new()
-    parcel_selection.start
+    
+    #parcel_delivery
+    screen.new()
+    
+    #parcel_results
+    screen.new()
 
-    screen.new()
-    parcel_delivery.start
-
-    screen.new()
-    parcel_results.start
-
-    screen.new()
 
 # Startup sequence
 def intro():
@@ -47,7 +46,7 @@ def outro():
 |_| \_| \__,_||_|\_|\___||_| |_| |_||_||_||_| |_|(_)
 [/#3CB371]""")
     time.sleep(1.5)
-    screen.clear()
+    screen.clear() # Return user to clean terminal
 
 
 # Start menu
@@ -65,15 +64,12 @@ def menu():
 """)
         option = input(">> ")
         if option == "1":
-            screen.new()
             help()
             screen.new()
         elif option == "2":
-            screen.new()
             newgame()
             screen.new()
         elif option == "3":
-            screen.new()
             hiscore()
             screen.new()
         else: # If the user input other than predefined, throw error in feedback box.
@@ -83,6 +79,7 @@ def menu():
 
 # Begin a new game
 def newgame():
+    screen.new()
     option = False
 
     while option != "3":
@@ -105,6 +102,7 @@ def newgame():
 
 # Display help
 def help():
+    screen.new()
     option = False
     while option == False:
         print(f"""
@@ -118,6 +116,7 @@ def help():
 [yellow]*[/yellow] Paina [green]ENTER[/green] palataksesi alkuvalikkoon [yellow]*[/yellow]
 """)
         option = input()
+    screen.new()
 
 
 # Display hiscores
