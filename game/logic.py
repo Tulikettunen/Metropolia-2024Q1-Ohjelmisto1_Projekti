@@ -1,23 +1,27 @@
-import os
 import time
-import random
 from rich import print
+from . import screen
+#from . import parcel_selection # Selection logic
+#from . import parcel_delivery # Delivery logic
+#from . import parcel_results # End screen logic
 
 
-def start():
-    screen_clear()
-    intro()
-    
-    screen_new()
-    mainmenu()
-    screen_clear()    
+# Gameplay loop
+def game_loop():
+    screen.new()
+    parcel_selection.start
 
-    outro()
-    screen_clear()
+    screen.new()
+    parcel_delivery.start
 
+    screen.new()
+    parcel_results.start
+
+    screen.new()
 
 # Startup sequence
 def intro():
+    screen.clear()
     print(f"""Tervetuloa pelaamaan Pakettipilottia!
 [#B0C4DE]
 [#BC8F8F]   .+---------+[/#BC8F8F]
@@ -33,6 +37,7 @@ def intro():
 
 # Exit sequence
 def outro():
+    screen.clear()
     print(f"""Kiitos kun pelasit![#3CB371]
  _   _  _   _  _                     _  _         _ 
 | \ | |(_) (_)| |                   (_)(_)       | |
@@ -42,39 +47,12 @@ def outro():
 |_| \_| \__,_||_|\_|\___||_| |_| |_||_||_||_| |_|(_)
 [/#3CB371]""")
     time.sleep(1.5)
+    screen.clear()
 
 
-# Gameplay loop (package selection -> package delivery -> end screen)
-def game_loop():
-    screen_new()
-    parcel_selection()
-
-    screen_new()
-    parcel_delivery()
-
-    screen_new()
-    parcel_results()
-
-    screen_new()
-
-
-# Players select their packages
-def parcel_selection():
-    print("tbd: parcel_selection")
-
-
-# Players deliver their packages
-def parcel_delivery():
-    print("tbd: parcel_delivery")
-
-
-# Players are shown their scores
-def parcel_results():
-    print("tbd: parcel_results")
-
-
-# Primary game menu
-def mainmenu():
+# Start menu
+def menu():
+    screen.new()
     option = False
 
     while option != "4":
@@ -87,23 +65,23 @@ def mainmenu():
 """)
         option = input(">> ")
         if option == "1":
-            screen_new()
+            screen.new()
             help()
-            screen_new()
+            screen.new()
         elif option == "2":
-            screen_new()
+            screen.new()
             newgame()
-            screen_new()
+            screen.new()
         elif option == "3":
-            screen_new()
+            screen.new()
             hiscore()
-            screen_new()
+            screen.new()
         else: # If the user input other than predefined, throw error in feedback box.
-            screen_clear()
-            screen_feedback(option, "error")
+            screen.clear()
+            screen.feedback(option, "error")
 
 
-# TBD
+# Begin a new game
 def newgame():
     option = False
 
@@ -121,11 +99,11 @@ def newgame():
             game_loop()
             break # Return to main menu after gameplay loop is complete.
         else: # If the user input other than predefined, throw error in feedback box.
-            screen_clear()
-            screen_feedback(option, "error")
+            screen.clear()
+            screen.feedback(option, "error")
 
 
-# Help menu screen
+# Display help
 def help():
     option = False
     while option == False:
@@ -142,31 +120,8 @@ def help():
         option = input()
 
 
-# Hiscore menu logic
+# Display hiscores
 def hiscore():
     option = False
     # TBD
-
-
-# Clear terminal function
-def screen_clear():
-    if os.name == 'nt': # Windows
-        os.system('cls')
-    else: # Unix/Linux
-        os.system('clear')
-
-
-# Print feedback box at top of the CLI.
-def screen_feedback(user_input, feedback_type):
-    if feedback_type == "error":
-        print(f"[ Virheellinen syöte: [red]\"{user_input}\"[/red] ! ]")
-    elif feedback_type == "none":
-        print(f"[ {'~' * 24} ]")
-
-
-# Clears screen and sets EMPTY feedback box.
-def screen_new():
-    screen_clear()
-    option = False
-    screen_feedback(option, "none")
 

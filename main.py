@@ -4,7 +4,9 @@ import game.logic as game
 
 def main():
     database.create_database_connection()
-    game.start()
+    game.intro()
+    game.menu()
+    game.outro()
 
 
 if __name__ == "__main__":
