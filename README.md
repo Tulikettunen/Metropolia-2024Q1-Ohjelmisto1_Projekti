@@ -22,7 +22,7 @@ Noel Kokkonen (noel.kokkonen@metropolia.fi)
 ### Ohjelman jatkokehitys ja käyttö
 
 - Clone/lataa lähdekoodi laitteelle ja valmistele kehitysympäristösi.
-- Asenna riippuvaisuudet suorittamalla: `pip install -r requirements.txt`, lähdekoodin root-kansiossa.
+- Riippuvaisuudet voit asentaa suorittamalla `setup.sh` (bash), joka luo virtuaalisen python ympäristön projektin pääkansioon (`/.venv`). Tai yleisesti suorittamalla: `pip install -r requirements.txt`, lähdekoodin root-kansiossa.
 - Määrittele ympäristömuuttujasi `config`-kansiossa olevalla `.env.template`:lla. Kopio tiedosto ja nimeä kopio uudelleen: `.env`, ja määrittele sen sisällä olevat muuttujat omaan ympäristöösi sopiviksi.
 - Ohjelma käynnistyy `main.py`-tiedoston kautta.
 
