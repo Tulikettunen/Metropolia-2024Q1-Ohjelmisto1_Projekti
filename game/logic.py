@@ -10,10 +10,16 @@ def start():
 
 # Printed INTRO menu
 def menu_intro():
-    print(f"Tervetulo pelaamaan Pakettipilottia!")
-    print(f"asd")
-    print(f"asdasd")
-    print(f"asdasdasd")
+    print(f"Tervetuloa pelaamaan Pakettipilottia!")
+    print(f"""
+   .+---------+
+ .' |       .'|                  .
++----+----+'  |   .. ............;;.
+|   |    |    |    ..::::::::::::;;;;.
+|  .+----+----+  . . ::::::::::::;;:'
+|.'      |  .'                  :'
++--------+'
+""")
 
 
 # Printed MAIN menu
