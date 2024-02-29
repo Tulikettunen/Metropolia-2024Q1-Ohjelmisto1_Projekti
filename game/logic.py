@@ -37,14 +37,13 @@ def menu_outro():
 
 # Printed MAIN menu
 def menu_main():
-    text = """
+    print(f"""
 [#6A5ACD]//[/#6A5ACD] [italic #FF7F50][ALKUVALIKKO][/italic #FF7F50]
 [#6A5ACD]•[/#6A5ACD] [bold blue]1:[/bold blue] Ohje
 [#6A5ACD]•[/#6A5ACD] [bold blue]2:[/bold blue] Uusi peli
 [#6A5ACD]•[/#6A5ACD] [bold blue]3:[/bold blue] Pistetaulukko
 [#6A5ACD]•[/#6A5ACD] [bold blue]4:[/bold blue] EXIT
-"""
-    print(text)
+""")
 
 
 # Printed HELP menu
@@ -56,7 +55,8 @@ def menu_help():
   valitut paketit niiden kohteeseen, ennen määräajan loppumista.
 [#6A5ACD]•[/#6A5ACD] Peliä voi pelata kerrallaan yksi tai useampi henkilö.
 [#6A5ACD]•[/#6A5ACD] Suoritus pisteytetään pelaajan hiilidioksidipäästöjen mukaan.
-\n[yellow]*[/yellow] Paina [green]ENTER[/green] palataksesi alkuvalikkoon [yellow]*[/yellow]""")
+
+[yellow]*[/yellow] Paina [green]ENTER[/green] palataksesi alkuvalikkoon [yellow]*[/yellow]""")
 
 # Startup intro
 def intro():
