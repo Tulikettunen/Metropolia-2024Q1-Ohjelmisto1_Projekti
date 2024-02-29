@@ -44,6 +44,35 @@ def outro():
     time.sleep(1.5)
 
 
+# Gameplay loop (package selection -> package delivery -> end screen)
+def game_loop():
+    screen_new()
+    parcel_selection()
+
+    screen_new()
+    parcel_delivery()
+
+    screen_new()
+    parcel_results()
+
+    screen_new()
+
+
+# Players select their packages
+def parcel_selection():
+    print("tbd: parcel_selection")
+
+
+# Players deliver their packages
+def parcel_delivery():
+    print("tbd: parcel_delivery")
+
+
+# Players are shown their scores
+def parcel_results():
+    print("tbd: parcel_results")
+
+
 # Primary game menu
 def mainmenu():
     option = False
@@ -77,7 +106,23 @@ def mainmenu():
 # TBD
 def newgame():
     option = False
-    # TBD
+
+    while option != "3":
+        print(f"""
+[#6A5ACD]//[/#6A5ACD] [italic #FF7F50][UUSI PELI][/italic #FF7F50]
+[#6A5ACD]•[/#6A5ACD] [bold blue]1:[/bold blue] Lisää uusi pelaaja
+[#6A5ACD]•[/#6A5ACD] [bold blue]2:[/bold blue] Aloita peli
+[#6A5ACD]•[/#6A5ACD] [bold blue]3:[/bold blue] Palaa alkuvalikkoon
+""")
+        option = input(">> ")
+        if option == "1": # Add new player to current game
+            print("Added new player!")
+        elif option == "2": # Start game
+            game_loop()
+            break # Return to main menu after gameplay loop is complete.
+        else: # If the user input other than predefined, throw error in feedback box.
+            screen_clear()
+            screen_feedback(option, "error")
 
 
 # Help menu screen
@@ -90,6 +135,7 @@ def help():
   valitut paketit niiden kohteeseen, ennen määräajan loppumista.
 [#6A5ACD]•[/#6A5ACD] Peliä voi pelata kerrallaan yksi tai useampi henkilö.
 [#6A5ACD]•[/#6A5ACD] Suoritus pisteytetään pelaajan hiilidioksidipäästöjen mukaan.
+  Päästöjen suuruuteen vaikuttaa: [yellow]tavaranimikkeen tyyppi[/yellow], [yellow]kuljettu matka[/yellow] ja [yellow]kuljetusmuoto[/yellow].
 
 [yellow]*[/yellow] Paina [green]ENTER[/green] palataksesi alkuvalikkoon [yellow]*[/yellow]
 """)
