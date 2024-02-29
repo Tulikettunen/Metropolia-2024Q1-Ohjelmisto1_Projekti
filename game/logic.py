@@ -5,7 +5,7 @@ import random
 def start():
     intro()
     mainmenu()
-    outro()
+    #outro()
 
 
 # Printed INTRO menu
@@ -38,35 +38,40 @@ def intro():
     screen_clear()
     menu_intro()
     time.sleep(2)
+    
+    screen_clear()
 
 
 # Main menu logic
 def mainmenu():
     option = False
-    screen_clear()
-    
+    screen_feedback(option, "none")
+
     while option != "4":
         menu_main()
         option = input("== ")
         if option == "1":
+            screen_clear()
             help()
-            screen_clear()
         elif option == "2":
-            newgame()
             screen_clear()
+            newgame()
         elif option == "3":
             hiscore()
+        else:
             screen_clear()
+            screen_feedback(option, "error")
 
 
 # Help menu logic
 def help():
     screen_clear()
     option = False
-    while option != "":
+    while option == False:
         menu_help()
         print("")
-        option = input("*Paina ENTER palataksesi alkuvalikkoon*")
+        option = input("*Paina ENTER palataksesi alkuvalikkoon*\n\n")
+        screen_clear()
 
 
 def newgame():
@@ -82,4 +87,12 @@ def screen_clear():
         os.system('cls')
     else: # Unix/Linux
         os.system('clear')
+
+def screen_feedback(input, feedback_type):
+    if feedback_type == "error":
+        print(f"[ Virheellinen syöte: \"{input}\" ! ]")
+        print("")
+    elif feedback_type == "none":
+        print(f"[ {'~' * 24} ]")
+        print("")
 
