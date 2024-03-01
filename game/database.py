@@ -143,3 +143,27 @@ def insert_new_player_scores_in_to_db(players: list[dict]) -> None | KeyError | 
         return error
     except DB_error as error:
         return error
+
+
+def fetch_player_highscores_from_db(count: int) -> list | DB_error:
+    """
+    Fetch top highscores from database.
+
+    :param count: Specifies how many highscores wanted (query limit).
+    :type count: int
+    :return: List of highscores or mysql.connector.Error if any error occur in the fetch
+    :rtype: [(int, string, int)] or DB_error
+    """
+
+    sql = f"SELECT game_id, player_name, player_highscore FROM highscore ORDER BY player_highscore DESC LIMIT {count}"
+
+    cursor = connection.cursor()
+
+    try:
+        cursor.execute(sql)
+        result = cursor.fetchall()
+
+        return result
+
+    except DB_error as error:
+        return error
