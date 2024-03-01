@@ -185,7 +185,7 @@ def clock(time_seconds, event):
 
 
 # Turn-logic (runs "loop" until "time_seconds" runs out)
-def turn(loop, time_seconds, event):
+def turn(loop, clock, time_seconds, event):
     # Define threads for loop & clock
     thread_loop = threading.Thread(target=loop, args=())
     thread_clock = threading.Thread(target=clock, args=(time_seconds, event))
