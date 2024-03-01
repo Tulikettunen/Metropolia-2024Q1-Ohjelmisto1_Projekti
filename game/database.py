@@ -13,6 +13,7 @@ def create_database_connection() -> DB_error or None:
     Establishes connection to the database using environment variables.
 
     :returns: Error in case of an error and None if no error occur.
+    :raises mysql.connector.Error: If the database connection creation fails
     """
 
     dotenv_path = Path('./config/.env')
@@ -38,8 +39,9 @@ def fetch_10_random_airports_from_db() -> list or DB_error:
     """
     Fetches 10 random airports from database.
 
-    :returns: List of airports as tuples or Error
+    :returns: List of airports as tuples
     :rtype: [(string, string, float, float)]
+    :raises mysql.connector.Error: If the database fetch fails
     """
 
     sql = ("SELECT airport.name, country.name, airport.latitude_deg, airport.longitude_deg "
@@ -64,8 +66,9 @@ def fetch_10_random_parcels_from_db() -> list or DB_error:
     """
     Fetches 10 random parcels from database.
 
-    :returns: List of parcels as tuple or Error
+    :returns: List of parcels as tuple
     :rtype: [(string, int, int, string)]
+    :raises mysql.connector.Error: If the database fetch fails
     """
 
     sql = "SELECT item, item_co2, item_type, item_info FROM parcel ORDER BY RAND() LIMIT 10"
