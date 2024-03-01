@@ -12,12 +12,12 @@ def game_loop():
     #parcel_selection
     for player in players:
         screen.new()
-        turn(parcel_selection.ChangeMe, 30, event)
+        turn(parcel_selection.ChangeMe, clock, 30, event)
     
     #parcel_delivery
     for player in players:
         screen.new()
-        turn(parcel_delivery.ChangeMe, 120, event)
+        turn(parcel_delivery.ChangeMe, clock, 120, event)
     
     #parcel_results
     screen.new()
