@@ -22,8 +22,12 @@ Kokkonen Noel (noel.kokkonen@metropolia.fi) \
 ### Jatkokehitys ja käyttö
 
 - Kopio/lataa ohjelman koodi githubista.
-- Latuaksen jälkeen avaa ohjelman koodi pycharmilla tai muulla omavalintaisella tekstieditorilla.
+- Latauksen jälkeen avaa ohjelman koodi pycharmilla tai muulla omavalintaisella tekstieditorilla.
 - Avaa terminal sovelluksen 'root'-folderissa ja aja uusi komento `pip install -r requirements.txt`. Komento asentaa kaikki sovelluksen tarvitsemat ulkopuoliset paketit oikeissa versioissa.
+
+- Saat tietokannasta kopion ajamalla `source '\path\to\ryhma_d_flight_game.sql\file'` MySQL Clientissa. 'ryhma_d_flight_game.sql'-tiedosto löytyy projektin 'root'-folderista. 
+- Vaihtoehtoisesti voit myös kopioida ja ajaa 'ryhma_d_flight_game.sql'-tiedoston sisällön HeidiSQL-sovelluksen 'Query'-osiossa.
+- Halutessasi vaihtaa tietokannan nimeä, voit tehdä sen muokkaamalla 'ryhma_d_flight_game.sql'-tiedoston 'CREATE DATABASE'-kohtaa, ennen ajoa HeidiSQL-sovelluksessa.
   
 - Latautumisen jälkeen mene 'config'-kansioon ja `kopioi '.env.template'-tiedoston sisältö`.
 - 'config'-kansiossa luo uusi tiedosto `.env` ja `liitä siihen kopioimasi siältö '.env.template'-tiedostosta`.
