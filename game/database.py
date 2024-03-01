@@ -33,3 +33,26 @@ def create_database_connection() -> DB_error or None:
         return None
     except DB_error as error:
         return error
+
+
+def fetch_10_random_airports_from_db() -> list or DB_error:
+    """
+    Fetches 10 random airports from database.
+
+    :returns: List of airports as tuples or Error
+    :rtype: [(string, string, float, float)]
+    """
+
+    sql = ("SELECT airport.name, country.name, airport.latitude_deg, airport.longitude_deg "
+           "FROM airport, country WHERE airport.iso_country = country.iso_country ORDER BY RAND() LIMIT 10")
+
+    cursor = connection.cursor()
+
+    try:
+        cursor.execute(sql)
+        result = cursor.fetchall()
+
+        return result
+
+    except DB_error as error:
+        return error
