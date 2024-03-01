@@ -5,7 +5,6 @@ from mysql.connector import Error as DB_error
 from dotenv import load_dotenv
 from pathlib import Path
 
-
 connection: MySQLConnectionAbstract
 
 
@@ -44,7 +43,10 @@ def fetch_10_random_airports_from_db() -> list or DB_error:
     """
 
     sql = ("SELECT airport.name, country.name, airport.latitude_deg, airport.longitude_deg "
-           "FROM airport, country WHERE airport.iso_country = country.iso_country ORDER BY RAND() LIMIT 10")
+           "FROM airport, country WHERE airport.iso_country = country.iso_country AND NOT airport.ident = 'EFHK' "
+           "ORDER BY RAND() LIMIT 10")
+    # The 'AND NOT airport.ident' is used to strip 'Helsinki Vantaa Airport'
+    # out of the query, because it is the start airport
 
     cursor = connection.cursor()
 
