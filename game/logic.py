@@ -1,4 +1,5 @@
 import time
+import threading
 from rich import print
 from . import screen
 #from . import parcel_selection # Selection logic
@@ -9,13 +10,18 @@ from . import screen
 # Gameplay loop
 def game_loop():
     #parcel_selection
-    screen.new()
+    for player in players:
+        screen.new()
+        turn(parcel_selection.ChangeMe, 30, event)
     
     #parcel_delivery
-    screen.new()
+    for player in players:
+        screen.new()
+        turn(parcel_delivery.ChangeMe, 120, event)
     
     #parcel_results
     screen.new()
+    parcel_results.ChangeMe()
 
 
 # Startup sequence
@@ -64,44 +70,90 @@ def menu():
 """)
         option = input(">> ")
         if option == "1":
-            help()
+            menu_help()
             screen.new()
         elif option == "2":
-            newgame()
+            menu_newgame()
             screen.new()
         elif option == "3":
-            hiscore()
+            menu_hiscore()
             screen.new()
         else: # If the user input other than predefined, throw error in feedback box.
-            screen.clear()
             screen.feedback(option, "error")
 
 
 # Begin a new game
-def newgame():
+def menu_newgame():
     screen.new()
     option = False
-
-    while option != "3":
-        print(f"""
+    player_list = list()
+    
+    while option != "4":
+        if player_list != []:
+            print(f"""
 [#6A5ACD]//[/#6A5ACD] [italic #FF7F50][UUSI PELI][/italic #FF7F50]
 [#6A5ACD]•[/#6A5ACD] [bold blue]1:[/bold blue] Lisää uusi pelaaja
 [#6A5ACD]•[/#6A5ACD] [bold blue]2:[/bold blue] Aloita peli
-[#6A5ACD]•[/#6A5ACD] [bold blue]3:[/bold blue] Palaa alkuvalikkoon
-""")
-        option = input(">> ")
-        if option == "1": # Add new player to current game
-            print("Added new player!")
+[#6A5ACD]•[/#6A5ACD] [bold blue]3:[/bold blue] Poista pelaaja
+[#6A5ACD]•[/#6A5ACD] [bold blue]4:[/bold blue] Palaa alkuvalikkoon
+
+[#6A5ACD]//[/#6A5ACD] [italic #FF7F50][PELAAJAT][/italic #FF7F50]""")
+            for player in player_list:
+                print(f"[#6A5ACD]•[/#6A5ACD] [bold blue]{player['name']}[/bold blue]")
+        if player_list == []:
+            print(f"""
+[#6A5ACD]//[/#6A5ACD] [italic #FF7F50][UUSI PELI][/italic #FF7F50]
+[#6A5ACD]•[/#6A5ACD] [bold blue]1:[/bold blue] Lisää uusi pelaaja
+[#6A5ACD]•[/#6A5ACD] [bold blue]2:[/bold blue] Aloita peli
+[#6A5ACD]•[/#6A5ACD] [bold blue]4:[/bold blue] Palaa alkuvalikkoon
+
+[#6A5ACD]//[/#6A5ACD] [italic #FF7F50][PELAAJAT][/italic #FF7F50]""")
+        
+        option = input("\n>> ")
+        if option == "1": # Add player
+            player_name = input(">> Syötä pelaajan nimi: ")
+            player_in_list = False
+            
+            for player in player_list:
+                if player.get("name") == player_name:
+                    player_in_list = True
+            
+            if player_in_list:
+                screen.new()
+                screen.feedback(player_name, "Nimimerkki on jo käytössä!")
+            else:
+                player_new = player_structure(player_name)
+                player_list.append(player_new)
+                screen.new()
+                screen.feedback(player_name, "Pelaaja lisätty!")
+
         elif option == "2": # Start game
+            screen.new()
             game_loop()
-            break # Return to main menu after gameplay loop is complete.
+            break # Return to main menu
+        
+        elif option == "3": # Remove player
+            if player_list == []:
+                screen.new()
+                screen.feedback(option, "error")
+            else: 
+                player_remove = input(">> Poista pelaaja: ")
+                for player in player_list:
+                    if player.get("name") == player_remove: # If player present
+                        player_list.remove(player)
+                        screen.new()
+                    else:
+                        screen.feedback(player_remove, "error")
+        
         else: # If the user input other than predefined, throw error in feedback box.
-            screen.clear()
+            screen.new()
             screen.feedback(option, "error")
+    
+    player_list = list()
 
 
 # Display help
-def help():
+def menu_help():
     screen.new()
     option = False
     while option == False:
@@ -116,11 +168,34 @@ def help():
 [yellow]*[/yellow] Paina [green]ENTER[/green] palataksesi alkuvalikkoon [yellow]*[/yellow]
 """)
         option = input()
-    screen.new()
 
 
 # Display hiscores
-def hiscore():
+def menu_hiscore():
     option = False
     # TBD
 
+
+# Turnclock
+def clock(time_seconds, event):
+    for i in range(time_seconds, -1, -1): # Sleep through time_seconds
+        #print(i)
+        time.sleep(1)
+    event.set() # Set event to signal completion
+
+
+# Turn-logic (runs "loop" until "time_seconds" runs out)
+def turn(loop, time_seconds, event):
+    # Define threads for loop & clock
+    thread_loop = threading.Thread(target=loop, args=())
+    thread_clock = threading.Thread(target=clock, args=(time_seconds, event))
+
+    # Start our threads
+    thread_loop.start()
+    thread_clock.start()
+
+    # Wait for thread_clock to signal completion via event=True
+    thread_clock.join()
+
+def player_structure(player_name):
+    return { "name": player_name, "score": False, "co2": 0, "location": False, "parcel_list_picked": False, "parcel_list_delivered": False }
