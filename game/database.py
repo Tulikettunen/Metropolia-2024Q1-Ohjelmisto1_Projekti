@@ -56,3 +56,25 @@ def fetch_10_random_airports_from_db() -> list or DB_error:
 
     except DB_error as error:
         return error
+
+
+def fetch_10_random_parcels_from_db() -> list or DB_error:
+    """
+    Fetches 10 random parcels from database.
+
+    :returns: List of parcels as tuple or Error
+    :rtype: [(string, int, int, string)]
+    """
+
+    sql = "SELECT item, item_co2, item_type, item_info FROM parcel ORDER BY RAND() LIMIT 10"
+
+    cursor = connection.cursor()
+
+    try:
+        cursor.execute(sql)
+        result = cursor.fetchall()
+
+        return result
+
+    except DB_error as error:
+        return error
