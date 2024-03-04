@@ -26,3 +26,7 @@ Noel Kokkonen (noel.kokkonen@metropolia.fi)
 - Määrittele ympäristömuuttujasi `config`-kansiossa olevalla `.env.template`:lla. Kopio tiedosto ja nimeä kopio uudelleen: `.env`, ja määrittele sen sisällä olevat muuttujat omaan ympäristöösi sopiviksi.
 - Ohjelma käynnistyy `main.py`-tiedoston kautta.
 
+
+- Saat tietokannasta kopion ajamalla `source '\path\to\ryhma_d_flight_game.sql\file'` MySQL Clientissa. 'ryhma_d_flight_game.sql'-tiedosto löytyy projektin 'root'-folderista. 
+- Vaihtoehtoisesti voit myös kopioida ja ajaa 'ryhma_d_flight_game.sql'-tiedoston sisällön HeidiSQL-sovelluksen 'Query'-osiossa.
+- Halutessasi vaihtaa tietokannan nimeä, voit tehdä sen muokkaamalla 'ryhma_d_flight_game.sql'-tiedoston 'CREATE DATABASE'-kohtaa, ennen ajoa HeidiSQL-sovelluksessa.
