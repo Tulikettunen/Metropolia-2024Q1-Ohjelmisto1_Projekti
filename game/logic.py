@@ -179,7 +179,6 @@ def menu_hiscore():
 # Turnclock
 def clock(time_seconds, event):
     for i in range(time_seconds, -1, -1): # Sleep through time_seconds
-        #print(i)
         time.sleep(1)
     event.set() # Set event to signal completion
 
