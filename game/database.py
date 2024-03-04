@@ -20,13 +20,14 @@ def create_database_connection() -> None | DB_error:
 
     try:
         global connection
+        
         connection = mysql.connector.connect(
-            host=os.getenv('HOST'),
-            database=os.getenv('DATABASE'),
-            port=os.getenv('PORT'),
-            username=os.getenv('USER'),
-            password=os.getenv('PASSWORD'),
-            autocommit=bool(os.getenv('AUTOCOMMIT'))
+            host=os.getenv('DB_HOST'),
+            database=os.getenv('DB_DATABASE'),
+            port=os.getenv('DB_PORT'),
+            username=os.getenv('DB_USER'),
+            password=os.getenv('DB_PASSWORD'),
+            autocommit=bool(os.getenv('DB_AUTOCOMMIT'))
         )
 
         return None
