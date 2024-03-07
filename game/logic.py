@@ -1,27 +1,41 @@
 import time
 import threading
-from rich import print
-from . import screen
-#from . import parcel_selection # Selection logic
-#from . import parcel_delivery # Delivery logic
-#from . import parcel_results # End screen logic
+from rich import print # Rich printing (colours, bolding, etc.)
+from . import format # Game constants
+from . import screen # Screen clearing etc.
+from . import parcel_selection # Selection logic
+from . import parcel_delivery # Delivery logic
+from . import parcel_results # End screen logic
 
 
 # Gameplay loop
 def game_loop():
+    parcel_selection.list_generate() # Generate parcel options for current game.
+
+
     #parcel_selection
     for player in players:
         screen.new()
-        turn(parcel_selection.ChangeMe, clock, 30, event)
-    
+        
+        # Kello?
+        #turn(parcel_selection.ChangeMe, clock, 30, event)
+        
+        parcel_selection.list_print()
+        parcel_selection.list_select()
+
     #parcel_delivery
     for player in players:
         screen.new()
-        turn(parcel_delivery.ChangeMe, clock, 120, event)
-    
+        
+        # Kello?
+        #turn(parcel_delivery.ChangeMe, clock, 120, event)
+
+        parcel_delivery.select_delivery()
+        parcel_delivery.select_delivery_method()
+
     #parcel_results
     screen.new()
-    parcel_results.ChangeMe()
+    #parcel_results.ChangeMe()
 
 
 # Startup sequence
@@ -122,8 +136,8 @@ def menu_newgame():
                 screen.new()
                 screen.feedback(player_name, "Nimimerkki on jo käytössä!")
             else:
-                player_new = player_structure(player_name)
-                player_list.append(player_new)
+                player_new = format.player_structure(player_name) # Reference base player_structure from format.py
+                player_list.append(player_new) # Add new player to next game participants
                 screen.new()
                 screen.feedback(player_name, "Pelaaja lisätty!")
 
@@ -196,5 +210,3 @@ def turn(loop, clock, time_seconds, event):
     # Wait for thread_clock to signal completion via event=True
     thread_clock.join()
 
-def player_structure(player_name):
-    return { "name": player_name, "score": False, "co2": 0, "location": False, "parcel_list_picked": False, "parcel_list_delivered": False }
