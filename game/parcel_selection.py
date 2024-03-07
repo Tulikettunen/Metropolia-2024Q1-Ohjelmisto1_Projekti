@@ -1,6 +1,6 @@
 # Parcel Selection Logic
 import random
-import model.format as format
+from . import format
 
 
 test_parcels = [
@@ -29,10 +29,11 @@ test_airports = [
 ("Halli Airport","Suomi",61.856039,24.786686)
 ]
 
+
 #the minimum and maximum weights of the heft classes in kg
 heft_classes = format.heft_classes
 
-def generate_list(list_of_parcels, lista_of_airports):
+def list_generate(list_of_parcels, lista_of_airports):
     """Takes a list of parcels and a list of airports and combines them into a single
     list with dictionaries containing all the information from the aforementioned lists"""
 
@@ -40,8 +41,7 @@ def generate_list(list_of_parcels, lista_of_airports):
 
     for i in range(len(list_of_parcels)):
         # Chooses a random weight for the item based on its heft type.
-        random_weight = float(f"{random.uniform(heft_classes.get(list_of_parcels[i][2])[0],
-        heft_classes.get(list_of_parcels[i][2])[1]):.2f}")
+        random_weight = float(f"{random.uniform(heft_classes.get(list_of_parcels[i][2])[0],heft_classes.get(list_of_parcels[i][2])[1]):.2f}")
 
         # combines all the values including the randomized weight into a single dictionary and adds it to the list of parcels with location information
         # STRUCTURE = { item, co2_item, heft, info, destination_airport, destination_country, latitude, longitude }
@@ -86,14 +86,14 @@ Noelin_parcel_list = [{'item': 'vasara', 'co2_item': 200, 'heft': 8.19, 'info': 
 #new_parcel_list = parcel_selector.parcel_compiler(Noelin_parcel_list, Noelin_airport_list)
 
 
-def players_parcel_selection_print(new_parcel_list,optilist):
+def list_print(new_parcel_list,optilist):
     i = 1
     print("Voit valita seuraavista 10 vaihtoehdosta 5: \n")
     for item in new_parcel_list:
         if str(i) in optilist:
-            print(f"[{i}]: {item.get("item")}: {item.get("info")}. Paino: {item.get("heft")} kg.")
+            print(f"[{i}]: {item.get('item')}: {item.get('info')}. Paino: {item.get('heft')} kg.")
         else:
-            print(f"[x]: {item.get("item")}: {item.get("info")}. Paino: {item.get("heft")} kg.")
+            print(f"[x]: {item.get('item')}: {item.get('info')}. Paino: {item.get('heft')} kg.")
         i += 1
     print("")
 
@@ -101,7 +101,7 @@ def players_parcel_selection_print(new_parcel_list,optilist):
 #players_parcel_selection_print(Noelin_parcel_list)
 
 
-def players_parcel_selection(new_parcel_list):
+def list_select(new_parcel_list):
     """Pelaaja valitsee mitä paketteja haluaa listaansa. Käyttäjävirheet huomioitu, printtaa myös
     valittavien asioiden listan jokaisen uuden valinnan yhteydessä ja merkkaa jo valitut x:llä """
 

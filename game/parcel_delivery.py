@@ -1,6 +1,6 @@
 # Parcel Delivery Logic
 from geopy import distance
-import model.format as format
+from . import format
 
 
 ## TEST DATA
@@ -22,7 +22,7 @@ import model.format as format
 
 
 # Select which parcel to deliver
-def select(player_data):
+def select_delivery(player_data):
     """Takes the acting players data as input and lets the player choose a parcel to deliver.
     Returns the index of the parcel in the list: 'player_parcels' in player data."""
 
@@ -35,7 +35,7 @@ def select(player_data):
 
         distance_from_player = distance.distance(player_data.get("location"), (parcel.get("latitude"), parcel.get("longitude")))
 
-        print(f"[{parcel_number}]: Tuote: {parcel.get("item")}, Paino: {parcel.get("heft")} kg, Kohde: {parcel.get("destination_airport")}, Etäisyys: {float(str(distance_from_player)[:-3]):.2f} km")
+        print(f"[{parcel_number}]: Tuote: {parcel.get('item')}, Paino: {parcel.get('heft')} kg, Kohde: {parcel.get('destination_airport')}, Etäisyys: {float(str(distance_from_player)[:-3]):.2f} km")
 
     # creates a list of valid inputs to be used later to check if the players input is valid
     list_of_valid_inputs = []
@@ -60,7 +60,7 @@ def select(player_data):
 
 
 # Select form of delivery transport.
-def plane(chosen_location, player_data):
+def select_delivery_method(chosen_location, player_data):
     """Takes the chosen travel location and the data of the acting player,
     lets the player choose an airplane and returns the number corresponding to the chosen airplane.
     The numbers that correspond to the airplanes are:
@@ -75,7 +75,7 @@ def plane(chosen_location, player_data):
     default_flight_time = float(str(distance_from_player)[:-3]) / format.transport_speed1 # flight time in hours, 800km/h used as a default speed of a commercial airplane
 
     #prints the airplane options with flight_times for the player to see
-    print(f"Valitsemasi kohde on {player_data.get("player_parcels")[int(chosen_location)].get("destination_airport")}, etäisyys {float(str(distance_from_player)[:-3]):.2f} km")
+    print(f"Valitsemasi kohde on {player_data.get('player_parcels')[int(chosen_location)].get('destination_airport')}, etäisyys {float(str(distance_from_player)[:-3]):.2f} km")
     print(f"[1]: Rahtilentokoneella kuljetus kestää {default_flight_time * format.transport_speed3:.1f} tuntia")
     print(f"[2]: Matkustajakoneella kuljetus kestää {default_flight_time:.1f} tuntia")
     print(f"[3]: Yksityiskoneella kuljetus kestää {default_flight_time * format.transport_speed2:.1f} tuntia")
