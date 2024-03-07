@@ -1,6 +1,6 @@
 # Player dictionary structure
 def player_structure(player_name):
-    return { "name": player_name, "score": False, "co2": 0, "location": (60.3172, 24.963301), "parcels_picked": [], "parcels_delivered": [] }
+    return { "name": player_name, "score": False, "co2": 0, "location": (60.3172, 24.963301), "parcels_picked": [], "parcels_delivered": [], "gameover": False }
 
 
 # Parcel dictionary structure (not defined, decreed by the database itself!)
