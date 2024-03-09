@@ -1,31 +1,83 @@
 import time
 import threading
-from rich import print
-from . import screen
-#from . import parcel_selection # Selection logic
-#from . import parcel_delivery # Delivery logic
-#from . import parcel_results # End screen logic
+from rich import print # Rich printing (colours, bolding, etc.)
+from . import format # Game constants
+from . import screen # Screen clearing etc.
+from . import parcel_selection # Selection logic
+from . import parcel_delivery # Delivery logic
+from . import parcel_results # End screen logic
 
 
 # Gameplay loop
-def game_loop():
-    #parcel_selection
-    for player in players:
+def game_loop(player_list):
+    game_parcel_list = parcel_selection.list_generate(test_parcels, test_airports) # Generate parcel options for current game.
+
+    # 1: Player chooses their 5 parcels.
+    for player in player_list:
         screen.new()
-        turn(parcel_selection.ChangeMe, clock, 30, event)
-    
-    #parcel_delivery
-    for player in players:
+        option = False
+        readyornot = input(f"""
+[#6A5ACD]//[/#6A5ACD] [italic #FF7F50][PAKETIN VALINTA][/italic #FF7F50]
+[#6A5ACD]•[/#6A5ACD] Pelaajan [bold blue]{player["name"]}[/bold blue] vuoro valita pakettinsa! 
+[#6A5ACD]•[/#6A5ACD] Sinulla on 30 sekuntia aikaa valita vapaasti viisi (5) pakettia listasta,
+  jonka näet vuorosi alettua.
+
+[yellow]*[/yellow] Paina [green]ENTER[/green] aloittaaksesi vuorosi [yellow]*[/yellow]
+""")
+
+        #while timer != 0:
+        player["parcels_picked"] = parcel_selection.list_select(game_parcel_list)
+
+
+    # 2: Players deliver their parcels.
+    for player in player_list:
         screen.new()
-        turn(parcel_delivery.ChangeMe, clock, 120, event)
-    
-    #parcel_results
+        option = False
+        readyornot = input(f"""
+[#6A5ACD]//[/#6A5ACD] [italic #FF7F50][PAKETIN TOIMITUS][/italic #FF7F50]
+[#6A5ACD]•[/#6A5ACD] Pelaajan [bold blue]{player["name"]}[/bold blue] vuoro valita pakettinsa! 
+[#6A5ACD]•[/#6A5ACD] Sinulla on 30 sekuntia aikaa valita vapaasti viisi (5) pakettia listasta,
+  jonka näet vuorosi alettua.
+
+[yellow]*[/yellow] Paina [green]ENTER[/green] aloittaaksesi vuorosi [yellow]*[/yellow]
+""")
+
+        #while timer != 0 or len(player["parcels_picked"]) == len(player["parcels_delivered"]):
+        while len(player["parcels_picked"]) != len(player["parcels_delivered"]):
+        
+            # Player chooses parcel to deliver
+            parcel_selected = parcel_delivery.select_delivery(player)
+            player["parcels_delivered"].append(player["parcels_picked"][parcel_selected])
+            
+            # Player chooses delivery method
+            player_co2_add = parcel_delivery.select_delivery_method(parcel_selected, player)
+            
+            # Tally co2 emissions
+            #player_co2 = player["co2"]
+            #player["co2"] = player_co2 + player_co2_add
+            
+
+    # 3: Players are shown the scoreboard
     screen.new()
-    parcel_results.ChangeMe()
+    #parcel_results.ChangeMe()
 
 
 # Startup sequence
-def intro():
+def intro_static():
+    screen.clear()
+    print(f"""Tervetuloa pelaamaan Pakettipilottia!
+[#B0C4DE]
+[#BC8F8F]   .+---------+[/#BC8F8F]
+[#BC8F8F] .' |       .'|[/#BC8F8F]                  .
+[#BC8F8F]+----+----+'  |[/#BC8F8F]   .. ............;;.
+[#BC8F8F]|   |    |    |[/#BC8F8F]    ..::::::::::::;;;;.
+[#BC8F8F]|  .+----+----+[/#BC8F8F]  . . ::::::::::::;;:'
+[#BC8F8F]|.'      |  .'[/#BC8F8F]                  :'
+[#BC8F8F]+--------+'[/#BC8F8F]
+[/#B0C4DE]""")
+    time.sleep(2)
+
+def intro_animated():
     screen.clear()
     print(f"""Tervetuloa pelaamaan Pakettipilottia!
 [#B0C4DE]
@@ -122,14 +174,14 @@ def menu_newgame():
                 screen.new()
                 screen.feedback(player_name, "Nimimerkki on jo käytössä!")
             else:
-                player_new = player_structure(player_name)
-                player_list.append(player_new)
+                player_new = format.player_structure(player_name) # Use player dict() structure from format.py
+                player_list.append(player_new) # Add new player to next game participants
                 screen.new()
                 screen.feedback(player_name, "Pelaaja lisätty!")
 
         elif option == "2": # Start game
             screen.new()
-            game_loop()
+            game_loop(player_list)
             break # Return to main menu
         
         elif option == "3": # Remove player
@@ -142,14 +194,15 @@ def menu_newgame():
                     if player.get("name") == player_remove: # If player present
                         player_list.remove(player)
                         screen.new()
+                        screen.feedback(player_remove, "Pelaaja poistettu!")
                     else:
                         screen.feedback(player_remove, "error")
-        
+
         else: # If the user input other than predefined, throw error in feedback box.
             screen.new()
             screen.feedback(option, "error")
     
-    player_list = list()
+    player_list = list() # Reset player_list if the user leaves newgame menu.
 
 
 # Display help
@@ -179,7 +232,6 @@ def menu_hiscore():
 # Turnclock
 def clock(time_seconds, event):
     for i in range(time_seconds, -1, -1): # Sleep through time_seconds
-        #print(i)
         time.sleep(1)
     event.set() # Set event to signal completion
 
@@ -197,5 +249,31 @@ def turn(loop, clock, time_seconds, event):
     # Wait for thread_clock to signal completion via event=True
     thread_clock.join()
 
-def player_structure(player_name):
-    return { "name": player_name, "score": False, "co2": 0, "location": False, "parcel_list_picked": False, "parcel_list_delivered": False }
+
+
+## TEST DATA
+test_parcels = [
+("vasara",200,3,"Vasara on hieno vasara"),
+("omena",300,1,"Omena on hieno omena"),
+("tietokone",150,2,"tietoinen kone"),
+("possu",175,1,"röh röh"),
+("kaakao",500,2,"makeaa"),
+("vaahtokarkki",1000,1,"kelluvaa"),
+("takki",10,3,"lämmittää kivasti"),
+("karkki",454,3,"aiai mun hampaat"),
+("sitruuna",343,1,"kirpiää"),
+("appelsiini",643,2,"appelsiini on hieno appelsiini")
+]
+
+test_airports = [
+("Aavahelukka Airport","Suomi", 67.60359954833984,23.97170066833496),
+("Ahmosuo Airport","Suomi",64.895302,25.752199),
+("Alavus Airfield","Suomi",62.554699,23.573299),
+("Jorvin Hospital Heliport","Suomi",60.220833,24.68639),
+("Kilpisjärvi Heliport","Suomi",69.0022201538086,20.89638900756836),
+("Enontekio Airport","Suomi",68.362602233887,23.424299240112),
+("Eura Airport","Suomi",61.1161,22.201401),
+("Forssa Airfield","Suomi",60.803683,23.650802),
+("Genböle Airport","Suomi",60.086899,22.5219),
+("Halli Airport","Suomi",61.856039,24.786686)
+]
