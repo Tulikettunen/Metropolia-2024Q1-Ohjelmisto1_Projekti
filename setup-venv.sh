@@ -15,7 +15,6 @@ fi
 # Update PIP and install dependencies.
 pip install --upgrade pip
 pip install -r requirements.txt
-deactivate # Leave venv.
 
 # Print some info for the user.
 echo "Script has finished!"
