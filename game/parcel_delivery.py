@@ -3,6 +3,7 @@ from geopy import distance
 from . import format
 from . import screen
 from rich import print
+import time
 
 
 # Select which parcel to deliver
@@ -46,7 +47,7 @@ def select_delivery(player_data):
 
 
 # Select form of delivery transport.
-def select_delivery_method(chosen_location, player_data):
+def select_delivery_method(chosen_location, player_data, start_time):
     """
     Takes the chosen travel location and the data of the acting player,
     lets the player choose an airplane and returns the number corresponding to the chosen airplane.
@@ -62,7 +63,7 @@ def select_delivery_method(chosen_location, player_data):
     #calculates the default flight time that is used to calculate the flight times of different airplane options
     default_flight_time = float(str(distance_from_player)[:-3]) / format.transport_speed1 # flight time in hours, 800km/h used as a default speed of a commercial airplane
     
-    screen.new()
+    screen.feedback("time",how_much_time_is_left(start_time,format.parcel_delivery_time_limit))
 
     #asks the player to choose an airplane and doesn't let them proceed until a valid input is given
     while True:
@@ -80,14 +81,37 @@ def select_delivery_method(chosen_location, player_data):
         else:
             screen.feedback(option, "error")
 
-    # CO2 emissions based on distance & delivery method. ADD BELOW
-    
+    # CO2 emissions based on distance & delivery method.
+    match option:
+        case "1":
+            CO2_multiplier = format.transport1_co2
+        case "2":
+            CO2_multiplier = format.transport2_co2
+        case "3":
+            CO2_multiplier = format.transport3_co2
 
-    # RETURN CO2 (add to players tally) immediately <-- ADD
-    return option # SHOULD BE CO2
+    delivery_CO2 = float(str(distance_from_player)[:-3]) * 0.36 * CO2_multiplier
+    parcel_CO2 = player_data["parcels_picked"][chosen_location].get("co2_item")
+    CO2_full = delivery_CO2 + parcel_CO2
+
+    return CO2_full
 
 
+def is_there_time_left(start_time, time_limit):
+    if time.time() - start_time > time_limit:
+        return False
+    return True
 
+
+def how_much_time_is_left(start_time, time_limit):
+    #Returns the remaining time represented as a boxes -> string
+    number_of_boxes = int(40 * (time_limit - (time.time() - start_time)) / time_limit) * "█"
+    if len(number_of_boxes) > 25:
+        return f"[#40ff19]{number_of_boxes}[/#40ff19]"
+    elif len(number_of_boxes) > 10:
+        return f"[#ffec17]{number_of_boxes}[/#ffec17]"
+    else:
+        return f"[#ff1717]{number_of_boxes}[/#ff1717]"
 
 ## TEST DATA
 #test_player_data = {"playername": "abc", "co2_produced": 0, "location": (60.3172, 24.963301), "parcels_picked": [{'item': 'vasara', 'co2_item': 200, 'heft': 8.19, 'info': 'Vasara on hieno vasara', 'destination_airport': 'Aavahelukka Airport', 'destination_country': 'Suomi', 'latitude': 67.60359954833984, 'longitude': 23.97170066833496},

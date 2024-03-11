@@ -1,8 +1,9 @@
 # Parcel End Screen Logic
-import screen
+from . import screen
 import time
 from rich.console import Console
 from rich.table import Table
+from . import parcel_delivery
 
 
 def show_end_screen(player_list: list[dict]) -> None:
@@ -31,6 +32,9 @@ def show_end_screen(player_list: list[dict]) -> None:
         # Time.sleep() and screen.clear() are used for small "loading animation"
         time.sleep(0.1)
         screen.clear()
+
+        if player_list[i]['score'] == 0:
+            player_list[i]['score'] = 'Game Over'
 
         score_table.add_row(
             str(i + 1) + ".",

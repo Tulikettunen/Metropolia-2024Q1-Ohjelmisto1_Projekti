@@ -4,6 +4,7 @@ import time
 from rich import print
 from . import format
 from . import screen
+from . import parcel_delivery
 
 
 # Define heft_classes from format.py
@@ -58,15 +59,15 @@ def list_select(game_parcel_list):
     The player is provided a list of selectable parcels,
     from which they must choose enough before the timer runs out.
     """
-    
+    start_time = time.time()
     option = False
-    screen.new()
+    screen.feedback("time",parcel_delivery.how_much_time_is_left(start_time,format.parcel_selection_time_limit))
     options_list = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
     list_print(game_parcel_list, options_list)
     option = input(">> ")
     i = 1
     player_parcel_list = []
-    while i <= 5:
+    while i <= 5 and parcel_delivery.is_there_time_left(start_time, format.parcel_selection_time_limit):
         if option in options_list:
             player_parcel_list.append(game_parcel_list[int(option) - 1])
             options_list.remove(option)
@@ -75,7 +76,7 @@ def list_select(game_parcel_list):
                 print(">> Kaikki paketit valittu!")
                 time.sleep(1.5)
                 break
-            screen.new()
+            screen.feedback("time",parcel_delivery.how_much_time_is_left(start_time, format.parcel_selection_time_limit))
             list_print(game_parcel_list, options_list)
             option = input(">> ")
         elif option in ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]:
