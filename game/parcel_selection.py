@@ -1,5 +1,6 @@
 # Parcel Selection Logic
 import random
+import time
 from rich import print
 from . import format
 from . import screen
@@ -39,12 +40,13 @@ def list_print(game_parcel_list, options_list):
     
     i = 1 # Start counting from 1, so the menu indexes run from 1-10 (displayed to player).
     
-    print("Valitse seuraavasta kymmenestä vaihtoehdosta viisi (5): \n")
+    print(f"[#6A5ACD]//[/#6A5ACD] [italic #FF7F50][PAKETIN VALINTA][/italic #FF7F50]\n")    
+    print("[#C39BD3]// Valitse seuraavasta kymmenestä vaihtoehdosta viisi:[/#C39BD3]")
     for item in game_parcel_list:
         if str(i) in options_list:
-            print(f"[#6A5ACD]•[/#6A5ACD] [[yellow]{i}[/yellow]]: {item.get('item')}: {item.get('info')}. Paino: {item.get('heft')} kg.")
+            print(f"[#C39BD3]•[/#C39BD3] [[yellow]{i}[/yellow]]: {item.get('item')}: {item.get('info')}. Paino: {item.get('heft')} kg.")
         else:
-            print(f"[#6A5ACD]•[/#6A5ACD] [[green]x[/green]]: {item.get('item')}: {item.get('info')}. Paino: {item.get('heft')} kg.")
+            print(f"[#C39BD3]•[/#C39BD3] [[green]x[/green]]: {item.get('item')}: {item.get('info')}. Paino: {item.get('heft')} kg.")
         i += 1
 
 
@@ -56,28 +58,36 @@ def list_select(game_parcel_list):
     The player is provided a list of selectable parcels,
     from which they must choose enough before the timer runs out.
     """
-
+    
+    option = False
+    screen.new()
     options_list = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
     list_print(game_parcel_list, options_list)
-    selection = input("Syötä numero (1-10) minkä paketin haluat valita kuljetettavaan listaan: \n")
+    option = input(">> ")
     i = 1
     player_parcel_list = []
     while i <= 5:
-        if selection in options_list:
-            player_parcel_list.append(game_parcel_list[int(selection) - 1])
-            options_list.remove(selection)
+        if option in options_list:
+            player_parcel_list.append(game_parcel_list[int(option) - 1])
+            options_list.remove(option)
             i += 1
             if i == 6:
-                print("Hienoa! Valitsit kaikki 5 pakettia!")
+                print(">> Kaikki paketit valittu!")
+                time.sleep(1.5)
                 break
+            screen.new()
             list_print(game_parcel_list, options_list)
-            selection = input("Hienoa! Anna seuraavan paketin numero: \n")
-        elif selection in ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]:
+            option = input(">> ")
+        elif option in ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]:
+            screen.new()
+            screen.feedback(option, "Paketti on jo valittu!")
             list_print(game_parcel_list, options_list)
-            selection = input("Olet jo valinnut kyseisen paketin, valitse toinen: \n")
+            option = input(">> ")
         else:
+            screen.new()
+            screen.feedback(option, "error")
             list_print(game_parcel_list, options_list)
-            selection = input("Anna validi luku (1-10): \n")
+            option = input(">> ")
     return player_parcel_list
 
 

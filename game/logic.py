@@ -16,15 +16,14 @@ def game_loop(player_list):
     for player in player_list:
         screen.new()
         option = False
-        readyornot = input(f"""
-[#6A5ACD]//[/#6A5ACD] [italic #FF7F50][PAKETIN VALINTA][/italic #FF7F50]
+        print(f"""[#6A5ACD]//[/#6A5ACD] [italic #FF7F50][PAKETIN VALINTA][/italic #FF7F50]
 [#6A5ACD]•[/#6A5ACD] Pelaajan [bold blue]{player["name"]}[/bold blue] vuoro valita pakettinsa! 
-[#6A5ACD]•[/#6A5ACD] Sinulla on 30 sekuntia aikaa valita vapaasti viisi (5) pakettia listasta,
-  jonka näet vuorosi alettua.
+[#6A5ACD]•[/#6A5ACD] Sinulla on 30 sekuntia aikaa valita vapaasti viisi (5) pakettia tulevasta listasta.
+  Jos aikasi loppuu kesken, häviät!
 
 [yellow]*[/yellow] Paina [green]ENTER[/green] aloittaaksesi vuorosi [yellow]*[/yellow]
 """)
-
+        readyornot = input()
         #while timer != 0:
         player["parcels_picked"] = parcel_selection.list_select(game_parcel_list)
 
@@ -33,23 +32,24 @@ def game_loop(player_list):
     for player in player_list:
         screen.new()
         option = False
-        readyornot = input(f"""
-[#6A5ACD]//[/#6A5ACD] [italic #FF7F50][PAKETIN TOIMITUS][/italic #FF7F50]
-[#6A5ACD]•[/#6A5ACD] Pelaajan [bold blue]{player["name"]}[/bold blue] vuoro valita pakettinsa! 
-[#6A5ACD]•[/#6A5ACD] Sinulla on 30 sekuntia aikaa valita vapaasti viisi (5) pakettia listasta,
-  jonka näet vuorosi alettua.
+        print(f"""[#6A5ACD]//[/#6A5ACD] [italic #FF7F50][PAKETIN KULJETUS][/italic #FF7F50]
+[#6A5ACD]•[/#6A5ACD] Pelaajan [bold blue]{player["name"]}[/bold blue] vuoro kuljettaa pakettinsa! 
+[#6A5ACD]•[/#6A5ACD] Sinulla on 120 sekuntia aikaa kuljettaa kaikki pakettisi.
+  Jos aikasi loppuu kesken, häviät!
 
 [yellow]*[/yellow] Paina [green]ENTER[/green] aloittaaksesi vuorosi [yellow]*[/yellow]
 """)
+        readyornot = input()
 
         #while timer != 0 or len(player["parcels_picked"]) == len(player["parcels_delivered"]):
         while len(player["parcels_picked"]) != len(player["parcels_delivered"]):
-        
+            screen.new()
             # Player chooses parcel to deliver
             parcel_selected = parcel_delivery.select_delivery(player)
             player["parcels_delivered"].append(player["parcels_picked"][parcel_selected])
             
             # Player chooses delivery method
+            screen.new()
             player_co2_add = parcel_delivery.select_delivery_method(parcel_selected, player)
             
             # Tally co2 emissions
@@ -113,8 +113,7 @@ def menu():
     option = False
 
     while option != "4":
-        print(f"""
-[#6A5ACD]//[/#6A5ACD] [italic #FF7F50][ALKUVALIKKO][/italic #FF7F50]
+        print(f"""[#6A5ACD]//[/#6A5ACD] [italic #FF7F50][ALKUVALIKKO][/italic #FF7F50]
 [#6A5ACD]•[/#6A5ACD] [bold blue]1:[/bold blue] Ohje
 [#6A5ACD]•[/#6A5ACD] [bold blue]2:[/bold blue] Uusi peli
 [#6A5ACD]•[/#6A5ACD] [bold blue]3:[/bold blue] Pistetaulukko
@@ -142,8 +141,7 @@ def menu_newgame():
     
     while option != "4":
         if player_list != []:
-            print(f"""
-[#6A5ACD]//[/#6A5ACD] [italic #FF7F50][UUSI PELI][/italic #FF7F50]
+            print(f"""[#6A5ACD]//[/#6A5ACD] [italic #FF7F50][ALKUVALIKKO / UUSI PELI][/italic #FF7F50]
 [#6A5ACD]•[/#6A5ACD] [bold blue]1:[/bold blue] Lisää uusi pelaaja
 [#6A5ACD]•[/#6A5ACD] [bold blue]2:[/bold blue] Aloita peli
 [#6A5ACD]•[/#6A5ACD] [bold blue]3:[/bold blue] Poista pelaaja
@@ -153,8 +151,7 @@ def menu_newgame():
             for player in player_list:
                 print(f"[#6A5ACD]•[/#6A5ACD] [bold blue]{player['name']}[/bold blue]")
         if player_list == []:
-            print(f"""
-[#6A5ACD]//[/#6A5ACD] [italic #FF7F50][UUSI PELI][/italic #FF7F50]
+            print(f"""[#6A5ACD]//[/#6A5ACD] [italic #FF7F50][ALKUVALIKKO / UUSI PELI][/italic #FF7F50]
 [#6A5ACD]•[/#6A5ACD] [bold blue]1:[/bold blue] Lisää uusi pelaaja
 [#6A5ACD]•[/#6A5ACD] [bold blue]2:[/bold blue] Aloita peli
 [#6A5ACD]•[/#6A5ACD] [bold blue]4:[/bold blue] Palaa alkuvalikkoon
@@ -210,8 +207,7 @@ def menu_help():
     screen.new()
     option = False
     while option == False:
-        print(f"""
-[#6A5ACD]//[/#6A5ACD] [italic #FF7F50][OHJE][/italic #FF7F50]
+        print(f"""[#6A5ACD]//[/#6A5ACD] [italic #FF7F50][ALKUVALIKKO / OHJE][/italic #FF7F50]
 [#6A5ACD]•[/#6A5ACD] Pelin tavoitteena on toimittaa kaikki pelivuoron alussa
   valitut paketit niiden kohteeseen, ennen määräajan loppumista.
 [#6A5ACD]•[/#6A5ACD] Peliä voi pelata kerrallaan yksi tai useampi henkilö.

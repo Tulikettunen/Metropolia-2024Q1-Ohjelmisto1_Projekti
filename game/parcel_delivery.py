@@ -1,6 +1,8 @@
 # Parcel Delivery Logic
 from geopy import distance
 from . import format
+from . import screen
+from rich import print
 
 
 # Select which parcel to deliver
@@ -10,17 +12,6 @@ def select_delivery(player_data):
     Returns the index of the parcel in the list: 'parcels_picked' in player data.
     """
 
-    # prints parcel options to the player
-    for parcel in player_data.get("parcels_picked"):
-        parcel_number = player_data.get("parcels_picked").index(parcel)+1
-
-        if parcel in player_data.get("parcels_delivered"):
-            parcel_number = "X"
-
-        distance_from_player = distance.distance(player_data.get("location"), (parcel.get("latitude"), parcel.get("longitude")))
-
-        print(f"[{parcel_number}]: Tuote: {parcel.get('item')}, Paino: {parcel.get('heft')} kg, Kohde: {parcel.get('destination_airport')}, Etäisyys: {float(str(distance_from_player)[:-3]):.2f} km")
-
     # creates a list of valid inputs to be used later to check if the players input is valid
     list_of_valid_inputs = []
     for parcel in player_data.get("parcels_picked"):
@@ -29,57 +20,71 @@ def select_delivery(player_data):
 
     # asks the player to give an input and doesn't let the player proceed until a valid input is given
     while True:
+        print(f"[#6A5ACD]//[/#6A5ACD] [italic #FF7F50][PAKETIN KULJETUS][/italic #FF7F50]\n")
+        print(f"[#C39BD3]// Valitse paketti, jonka haluat kuljettaa:[/#C39BD3]")
 
-        player_input = input("Valitse kuljetettava paketti: ")
+        # prints parcel options to the player
+        for parcel in player_data.get("parcels_picked"):
+            parcel_number = f"[yellow]{player_data.get('parcels_picked').index(parcel)+1}[/yellow]"
+            if parcel in player_data.get("parcels_delivered"):
+                parcel_number = "[green]X[/green]"
 
-        if player_input in list_of_valid_inputs:
-            print(f"Valitsit paketin {player_input}")
+            distance_from_player = distance.distance(player_data.get("location"), (parcel.get("latitude"), parcel.get("longitude")))
+            print(f"[#C39BD3]•[/#C39BD3] [{parcel_number}]: Tuote: {parcel.get('item')}, Paino: {parcel.get('heft')} kg, Kohde: {parcel.get('destination_airport')}, Etäisyys: {float(str(distance_from_player)[:-3]):.2f} km")
+        
+        option = input(">> ")
+
+        if option in list_of_valid_inputs:
+            #screen.feedback(option, "Paketti valittu")
             break
-        elif player_input in ["1","2","3","4","5"]:
-            print(f"Olet jo kuljettanut tämän paketin")
+        elif option in ["1","2","3","4","5"]:
+            screen.feedback(option, "Paketti on jo toimitettu!")
         else:
-            print("Tämä ei ole validi syöte")
+            screen.feedback(option, "error")
 
-    return int(player_input)-1 # Returns the parcel ( dict() ) index for which parcel the player wishes to deliver.
+    return int(option)-1 # Returns the parcel ( dict() ) index for which parcel the player wishes to deliver.
 
 
 # Select form of delivery transport.
 def select_delivery_method(chosen_location, player_data):
-    """Takes the chosen travel location and the data of the acting player,
+    """
+    Takes the chosen travel location and the data of the acting player,
     lets the player choose an airplane and returns the number corresponding to the chosen airplane.
     The numbers that correspond to the airplanes are:
     1. "Rahtikone"
     2. "Matkustajakone"
-    3. "Yksityiskone" """
-
+    3. "Yksityiskone"
+    """
+    
     #calculates the distance from players current location to the chosen destination
     distance_from_player = distance.distance(player_data.get("location"), ((player_data.get("parcels_picked")[int(chosen_location)].get("latitude")), (player_data.get("parcels_picked")[int(chosen_location)].get("longitude"))))
 
     #calculates the default flight time that is used to calculate the flight times of different airplane options
     default_flight_time = float(str(distance_from_player)[:-3]) / format.transport_speed1 # flight time in hours, 800km/h used as a default speed of a commercial airplane
+    
+    screen.new()
 
-    #prints the airplane options with flight_times for the player to see
-    print(f"Valitsemasi kohde on {player_data.get('parcels_picked')[int(chosen_location)].get('destination_airport')}, etäisyys {float(str(distance_from_player)[:-3]):.2f} km")
-    print(f"[1]: Rahtilentokoneella kuljetus kestää {default_flight_time * format.transport_speed3:.1f} tuntia")
-    print(f"[2]: Matkustajakoneella kuljetus kestää {default_flight_time:.1f} tuntia")
-    print(f"[3]: Yksityiskoneella kuljetus kestää {default_flight_time * format.transport_speed2:.1f} tuntia")
-
-    #asks the player to choose an airplane and doesn't let then proceed until a valid input is given
+    #asks the player to choose an airplane and doesn't let them proceed until a valid input is given
     while True:
+        print(f"[#6A5ACD]//[/#6A5ACD] [italic #FF7F50][PAKETIN KULJETUS / TOIMITUSTAPA][/italic #FF7F50]")
+        print(f"[#6A5ACD]•[/#6A5ACD]Kohteena: [#76D7C4]{player_data.get('parcels_picked')[int(chosen_location)].get('destination_airport')}[/#76D7C4], etäisyys: {float(str(distance_from_player)[:-3]):.0f} km\n")
+        print(f"[#C39BD3]Valitse toimitustapa![/#C39BD3]")
+        print(f"[#C39BD3]•[/#C39BD3] [[yellow]1[/yellow]]: Rahtikone ({default_flight_time * format.transport_speed3:.1f} tuntia)")
+        print(f"[#C39BD3]•[/#C39BD3] [[yellow]2[/yellow]]: Matkustajakone ({default_flight_time:.1f} tuntia")
+        print(f"[#C39BD3]•[/#C39BD3] [[yellow]3[/yellow]]: Yksityiskone ({default_flight_time * format.transport_speed2:.1f} tuntia)")
+        option = input(">> ")
 
-        player_input = input("Valitse lentokone: ")
-
-        if player_input in ["1","2","3"]:
-            print(f"Valitsit lentokoneen {player_input}")
+        if option in ["1","2","3"]:
+            #print(f"Valitsit lentokoneen {option}")
             break
         else:
-            print("Tämä ei ole validi syöte")
+            screen.feedback(option, "error")
 
     # CO2 emissions based on distance & delivery method. ADD BELOW
     
 
     # RETURN CO2 (add to players tally) immediately <-- ADD
-    return player_input # SHOULD BE CO2
+    return option # SHOULD BE CO2
 
 
 
