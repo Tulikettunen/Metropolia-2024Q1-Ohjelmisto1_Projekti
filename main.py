@@ -10,7 +10,7 @@ def main():
         print("Database connection established.")
         # start the app
         database.create_database_connection()
-        game.intro_static()
+        #game.intro()
         game.menu()
         game.outro()
 
